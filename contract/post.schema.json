@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "post / frontmatter contract",
+  "description": "A draft destined for publication. Strict (additionalProperties:false) and mirrors bdelanghe/site contract/posts.schema.json + a routing target, so a finished draft is publish-ready by construction.",
+  "type": "object",
+  "required": ["title", "type", "date", "description", "target"],
+  "additionalProperties": false,
+  "properties": {
+    "title": { "type": "string" },
+    "type": { "type": "string", "enum": ["post"] },
+    "date": { "type": "string", "description": "YYYY-MM-DD" },
+    "description": { "type": "string", "description": "one line, kept <=160 chars" },
+    "target": { "type": "string", "enum": ["dev", "bounded-tools"], "description": "publish destination + voice: dev = first-person (robertdelanghe.dev); bounded-tools = Bounded Systems (we-voice)" },
+    "slug": { "type": "string" },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "syndication": { "type": "array", "items": { "type": "string" } }
+  }
+}
