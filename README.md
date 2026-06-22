@@ -1,29 +1,32 @@
-# vault
+# vault — a schema-first corpus
 
-A private Obsidian vault for thinking + drafting, with a **local, offline** LLM.
-Drafts here become posts on [robertdelanghe.dev/blog](https://robertdelanghe.dev/blog).
+A knowledge corpus where **every note conforms to a contract**. Notes are typed;
+drafts are publish-ready by construction. (A local LLM over it is optional — the
+value here is the *schema*, not the AI.)
 
-## One-time local setup
-1. Obsidian → **Open folder as vault** → this repo.
-2. [Ollama](https://ollama.com): `ollama pull llama3.2` and `ollama pull nomic-embed-text`.
-3. Community plugins → enable **Copilot**, **Smart Connections**, **Templater**.
-   - Copilot → provider **Ollama** (`http://localhost:11434`), model `llama3.2`; use **Vault QA** to chat over notes. Nothing leaves your machine.
-   - Smart Connections → local embeddings (`nomic-embed-text`).
-   - Templater → template folder `templates/`.
+## The idea
+Each note declares a `type`; its `type` selects a contract in `contract/`:
+- `type: note | concept | project` → `contract/note.schema.json` (loose knowledge base)
+- `type: post` → `contract/post.schema.json` (strict; mirrors the blog's contract + a routing `target`)
+
+`node validate.mjs` (and CI, `.github/workflows/validate.yml`) **fails any note that doesn't conform** — the same invalid-states-unrepresentable boundary as `bdelanghe/site` and `fold-engine`.
 
 ## Structure
-- `notes/` — the knowledge base. Copilot / Smart Connections index this.
-- `drafts/` — posts-in-progress (use the post template).
-- `templates/` — note + post templates.
-- `index.md` — map of content.
+- `notes/` — the knowledge base (typed notes)
+- `drafts/` — posts-in-progress (`type: post`)
+- `contract/` — the schemas every note is held to
+- `templates/` — Templater templates that emit conformant frontmatter
+- `validate.mjs` — the schema gate
 
-## Publish flow
-A finished `drafts/<slug>.md` is **publish-ready by construction**: its frontmatter
-matches the blog's contract (`bdelanghe/site` → `contract/posts.schema.json`). To publish,
-copy it to `site/posts/<slug>.md` and open a PR — the site validates the frontmatter,
-renders it, and the `cards` workflow generates its social card.
+## Publish flow (routed by `target`)
+A finished `drafts/<slug>.md` (`type: post`):
+- `target: dev` → robertdelanghe.dev (first-person) → copy to `site/posts/<slug>.md`
+- `target: bounded-tools` → bounded.tools (Bounded Systems, we-voice)
 
-## The contract (keep in sync with the site)
-**Frontmatter:** `title`, `date` (YYYY-MM-DD), `description` (≤160 chars), optional `slug`, `tags`, `syndication`.
-**Body:** markdown (small safe subset) + `{{token}}` transclusion — facts come from canonical
-tokens, not retyped: `{{thesis}}`, `{{org}}`, `{{email}}`, `{{proof.prx}}` … (resolved at site build).
+Its frontmatter already matches the site's `posts.schema.json`, so it builds, renders semantic markup, and gets an auto social card — no edits.
+
+## Obsidian (schema tooling)
+Open as a vault; enable: **Metadata Menu** (typed frontmatter / fileClass *is* a schema, enforced as you type), **Templater** (`templates/`), **Dataview** (query the typed frontmatter), **Linter** (normalize frontmatter).
+
+## Optional: offline LLM
+If you want chat over the corpus: Ollama + Copilot/Smart Connections, fully local. Not required.
