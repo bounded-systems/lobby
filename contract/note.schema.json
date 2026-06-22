@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "note / frontmatter contract",
+  "description": "Base type for knowledge notes. Loose (additionalProperties) — notes vary; only title + type are required.",
+  "type": "object",
+  "required": ["title", "type"],
+  "additionalProperties": true,
+  "properties": {
+    "title": { "type": "string" },
+    "type": { "type": "string", "enum": ["note", "concept", "project"] },
+    "created": { "type": "string", "description": "YYYY-MM-DD" },
+    "tags": { "type": "array", "items": { "type": "string" } },
+    "aliases": { "type": "array", "items": { "type": "string" } }
+  }
+}
