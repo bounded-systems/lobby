@@ -5,6 +5,6 @@
   },
   "description": {
     "type": "meta",
-    "value": "A knowledge corpus where every note conforms to a contract. Notes are typed;"
+    "value": "A knowledge corpus where every note conforms to a contract.  Notes are typed; drafts are publish-ready by construction.  (A local LLM over it is optional — the value here is the schema, not the AI."
   }
 }
