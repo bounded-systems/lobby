@@ -1,0 +1,10 @@
+{
+  "name": {
+    "type": "name",
+    "value": "Lobby"
+  },
+  "description": {
+    "type": "meta",
+    "value": "A knowledge corpus where every note conforms to a contract. Notes are typed;"
+  }
+}
