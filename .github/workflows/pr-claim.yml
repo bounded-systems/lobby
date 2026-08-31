@@ -53,4 +53,4 @@ jobs:
       issues: read
       pull-requests: read
     # SHA-pinned, per org policy — never a branch.
-    uses: bounded-systems/.github/.github/workflows/_pr-claim.yml@8a56f22f32bd007affbef503a4f1ac736c9aa52d
+    uses: bounded-systems/.github/.github/workflows/_pr-claim.yml@992d8bccd62ee7998e70f664743460e7164f398e
